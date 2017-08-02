@@ -5,19 +5,14 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
+			* {
+				box-sizing: border-box;
+			}
 			body {
 				font-family: Monospace;
-				background-color: #000;
 				color: #000;
 				margin: 0px;
 				overflow: hidden;
-			}
-
-			iframe {
-				position: absolute;
-				z-index: 2;
-				right: 0.5em;
-				bottom: 0.5em;
 			}
 
 			#info {
@@ -25,6 +20,18 @@
 				padding: 10px;
 				width: 100%;
 				text-align: center;
+			}
+
+			#container {
+				width: 60vw;
+				height: calc(0.75 * 60vw);
+				display: inline-block;
+			}
+
+			#textureSourceFrame {
+				width: 38vw;
+				height: calc(0.75 * 38vw);
+				display: inline-block;
 			}
 
 			a {
@@ -38,10 +45,10 @@
 	<body>
 		<div id="info">WebGL IFrame Texture</div>
 
-		<!--iframe id="textureSourceFrame" src="http://www.tojicode.com/"></iframe-->
-		<iframe id="textureSourceFrame" width="560" height="315" src="https://www.youtube.com/embed/UjXi6X-moxE?autoplay=1" frameborder="0" allowfullscreen>
-      <p>Your browser does not support iframes.</p>
-    </iframe>
+		<div id="container"></div>
+
+		<iframe id="textureSourceFrame" src="https://www.youtube.com/embed/UjXi6X-moxE?autoplay=1" frameborder="0" allowfullscreen>
+		</iframe>
 
 		<script src="js/three.js"></script>
 
@@ -133,7 +140,7 @@
 
 			function init() {
 
-				container = document.createElement( 'div' );
+				container = document.getElementById('container');
 				document.body.appendChild( container );
 
 				// scene
@@ -143,10 +150,10 @@
 
 				// camera
 
-				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.x = 500;
-				camera.position.y = 25;
-				camera.position.z = 1000;
+				camera = new THREE.PerspectiveCamera( 30, container.offsetWidth / container.offsetHeight, 1, 10000 );
+				camera.position.x = 300;
+				camera.position.y = 100;
+				camera.position.z = 500;
 				scene.add( camera );
 
 				// lights
@@ -282,7 +289,7 @@
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize( container.offsetWidth, container.offsetHeight );
 				renderer.setClearColor( scene.fog.color );
 
 				container.appendChild( renderer.domElement );
@@ -315,10 +322,10 @@
 
 			function onWindowResize() {
 
-				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.aspect = container.offsetWidth / container.offsetHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize( container.offsetWidth, container.offsetHeight );
 
 			}
 
